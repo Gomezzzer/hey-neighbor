@@ -1,68 +1,108 @@
 import React, { useState, useEffect } from "react";
 import "./MessageBoard.css";
 
-interface Message {
+type Message = {
   id: number;
-  name: string;
-  content: string;
+  author: string;
+  text: string;
   timestamp: string;
-}
+};
 
-const MessageBoard: React.FC = () => {
+const MessageBoard = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
-  const [name, setName] = useState("");
+  const [author, setAuthor] = useState("");
+  const [text, setText] = useState("");
+  const [editId, setEditId] = useState<number | null>(null);
 
+  // Load saved messages from localStorage on mount
   useEffect(() => {
-    const savedName = localStorage.getItem("neighborName");
-    if (savedName) setName(savedName);
-    else {
-      const userName = prompt("What's your name?");
-      if (userName) {
-        setName(userName);
-        localStorage.setItem("neighborName", userName);
-      }
-    }
+    const saved = localStorage.getItem("messages");
+    if (saved) setMessages(JSON.parse(saved));
   }, []);
 
-  const handlePost = () => {
-    if (!input.trim()) return;
-    const newMessage: Message = {
-      id: Date.now(),
-      name,
-      content: input,
-      timestamp: new Date().toLocaleTimeString(),
-    };
-    setMessages([newMessage, ...messages]);
-    setInput("");
+  // Save to localStorage on messages change
+  useEffect(() => {
+    localStorage.setItem("messages", JSON.stringify(messages));
+  }, [messages]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!author || !text) return;
+
+    if (editId !== null) {
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === editId ? { ...msg, author, text } : msg
+        )
+      );
+      setEditId(null);
+    } else {
+      const newMessage: Message = {
+        id: Date.now(),
+        author,
+        text,
+        timestamp: new Date().toLocaleString(),
+      };
+      setMessages([newMessage, ...messages]);
+    }
+
+    setAuthor("");
+    setText("");
+  };
+
+  const handleEdit = (id: number) => {
+    const msg = messages.find((m) => m.id === id);
+    if (msg) {
+      setAuthor(msg.author);
+      setText(msg.text);
+      setEditId(id);
+    }
+  };
+
+  const handleDelete = (id: number) => {
+    if (confirm("Delete this message?")) {
+      setMessages((prev) => prev.filter((m) => m.id !== id));
+    }
   };
 
   return (
     <div className="message-board">
-      <h2>Neighbor Feed</h2>
-      <div className="message-input">
-        <textarea
-          placeholder="Share something with your neighbors..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button onClick={handlePost}>Post</button>
-      </div>
+      <h2>Neighborhood Message Board</h2>
 
-      <div className="message-list">
+      <form onSubmit={handleSubmit} className="message-form">
+        <input
+          type="text"
+          placeholder="Your Name"
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+        />
+        <textarea
+          placeholder="Write your message..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <button type="submit">
+          {editId !== null ? "Update Message" : "Post Message"}
+        </button>
+      </form>
+
+      <ul className="message-list">
         {messages.map((msg) => (
-          <div key={msg.id} className="message">
-            <div className="message-header">
-              <strong>{msg.name}</strong>
-              <span className="timestamp">{msg.timestamp}</span>
+          <li key={msg.id} className="message-card">
+            <p className="message-text">{msg.text}</p>
+            <div className="message-meta">
+              <strong>{msg.author}</strong> — <span>{msg.timestamp}</span>
             </div>
-            <p>{msg.content}</p>
-            <hr />
-          </div>
+            <div className="message-actions">
+              <button onClick={() => handleEdit(msg.id)}>Edit</button>
+              <button onClick={() => handleDelete(msg.id)}>Delete</button>
+            </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
 
 export default MessageBoard;
+
