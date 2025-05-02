@@ -1,0 +1,15 @@
+.custom-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease;
+    max-width: 600px;
+    margin: 1rem auto;
+  }
+  
+  .custom-card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
+  
