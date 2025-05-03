@@ -7,7 +7,6 @@ import "./Input.css";
 import MessageBoard from "./components/ui/MessageBoard";
 import "./NavBar.css";
 
-
 const NavBar = () => (
   <nav className="navbar">
     <ul>
@@ -16,21 +15,6 @@ const NavBar = () => (
     </ul>
   </nav>
 );
-
-function App() {
-  return (
-    <Router>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/messages" element={<MessageBoard />} />
-      </Routes>
-    </Router>
-  );
-}
-
-// Removed duplicate App function to resolve the error
-
 
 const Button = ({ type = "button", className = "", children, onClick }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button type={type} className={`custom-button ${className}`} onClick={onClick}>
@@ -89,7 +73,6 @@ const LandingPage = () => {
               Notify Me
             </Button>
           </form>
-          
 
           <p className="launch-info">Launching soon in select neighborhoods</p>
 
@@ -110,6 +93,19 @@ const LandingPage = () => {
   );
 };
 
+function App() {
+  return (
+    <Router>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/messages" element={<MessageBoard />} />
+      </Routes>
+    </Router>
+  );
+}
+
 export default App;
+
 
 
