@@ -95,6 +95,21 @@
   background-color: #d5d5d5;
 }
 
+.like-button {
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 6px 12px;
+  margin-left: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.like-button:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
 
 
 

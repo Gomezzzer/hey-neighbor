@@ -6,6 +6,7 @@ type Message = {
   author: string;
   text: string;
   timestamp: string;
+  likes: number;
 };
 
 const MessageBoard = () => {
@@ -42,6 +43,7 @@ const MessageBoard = () => {
         author,
         text,
         timestamp: new Date().toLocaleString(),
+        likes: 0,
       };
       setMessages([newMessage, ...messages]);
     }
@@ -65,6 +67,14 @@ const MessageBoard = () => {
     }
   };
 
+  const handleLike = (id: number) => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.id === id ? { ...msg, likes: msg.likes + 1 } : msg
+      )
+    );
+  };  
+  
   return (
     <div className="message-board">
       <h2>Neighborhood Message Board</h2>
@@ -96,6 +106,7 @@ const MessageBoard = () => {
             <div className="message-actions">
               <button onClick={() => handleEdit(msg.id)}>Edit</button>
               <button onClick={() => handleDelete(msg.id)}>Delete</button>
+              <button className="like-button" onClick={() => handleLike(msg.id)}> 👍 {msg.likes}</button>
             </div>
           </li>
         ))}
