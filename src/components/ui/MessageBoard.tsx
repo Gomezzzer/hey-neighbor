@@ -77,7 +77,7 @@ const MessageBoard = () => {
   
   return (
     <div className="message-board">
-      <h2>Neighborhood Message Board</h2>
+      <h2>Message Board</h2>
 
       <form onSubmit={handleSubmit} className="message-form">
         <input
