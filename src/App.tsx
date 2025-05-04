@@ -10,17 +10,27 @@ import "./NavBar.css";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase"; 
+import AuthForm from "./components/ui/AuthForm";
+import "./LandingPage.css";
+import "./Button.css";
+import "./Input.css";
+import "./NavBar.css";
 
 
-
-const NavBar = () => (
+const NavBar = ({ user }: { user: any }) => (
   <nav className="navbar">
     <ul>
       <li><Link to="/">Home</Link></li>
       <li><Link to="/messages">Message Board</Link></li>
+      {!user ? (
+        <li><Link to="/auth">Login / Signup</Link></li>
+      ) : (
+        <li><button onClick={() => auth.signOut()}>Logout</button></li>
+      )}
     </ul>
   </nav>
 );
+
 
 const Button = ({ type = "button", className = "", children, onClick }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button type={type} className={`custom-button ${className}`} onClick={onClick}>
@@ -100,19 +110,22 @@ const LandingPage = () => {
 };
 
 function App() {
+  const [user, setUser] = useState<any>(null);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("User status changed:", currentUser);
+      setUser(currentUser);
     });
     return () => unsubscribe();
   }, []);
 
   return (
     <Router>
-      <NavBar />
+      <NavBar user={user} />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/messages" element={<MessageBoard />} />
+        <Route path="/auth" element={<AuthForm />} />
       </Routes>
     </Router>
   );
