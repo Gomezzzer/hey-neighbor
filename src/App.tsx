@@ -6,6 +6,12 @@ import "./Button.css";
 import "./Input.css";
 import MessageBoard from "./components/ui/MessageBoard";
 import "./NavBar.css";
+// In App.tsx or a context file
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/firebase"; 
+
+
 
 const NavBar = () => (
   <nav className="navbar">
@@ -94,6 +100,13 @@ const LandingPage = () => {
 };
 
 function App() {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("User status changed:", currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <Router>
       <NavBar />
@@ -104,6 +117,7 @@ function App() {
     </Router>
   );
 }
+
 
 export default App;
 
