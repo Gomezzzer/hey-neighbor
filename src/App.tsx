@@ -10,14 +10,15 @@ import "./NavBar.css";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase"; 
-import AuthForm from "./components/ui/AuthForm";
+// import AuthForm from "./components/ui/AuthForm";
 import "./LandingPage.css";
 import "./Button.css";
 import "./Input.css";
 import "./NavBar.css";
 import ProtectedRoute from "./components/ui/ProtectedRoute"; 
 import PublicRoute from "./components/ui/PublicRoute";
-import SignUp from "./components/ui/SignUp"; // Import the SignUp component
+import SignUp from "./components/ui/Signup"; // Import the SignUp component
+import Login from "./components/ui/Login"; // Import the Login component
 
 const NavBar = ({ user }: { user: any }) => (
   <nav className="navbar">
@@ -25,7 +26,7 @@ const NavBar = ({ user }: { user: any }) => (
       <li><Link to="/">Home</Link></li>
       <li><Link to="/messages">Message Board</Link></li>
       {!user ? (
-        <li><Link to="/auth">Login / Signup</Link></li>
+        <li><Link to="/login">Login</Link> / <Link to="/signup">Sign Up</Link></li>
       ) : (
         <li><button onClick={() => auth.signOut()}>Logout</button></li>
       )}
@@ -134,23 +135,22 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/auth"
-          element={
-            <PublicRoute user={user}>
-              <AuthForm />
-            </PublicRoute>
-          }
-        />
-        {/* Add the /signup route */}
-        <Route
-          path="/SignUp"
-          element={
-            <PublicRoute user={user}>
-              <SignUp />
-            </PublicRoute>
-          }
-        />
+         <Route
+    path="/login"
+    element={
+      <PublicRoute user={user}>
+        <Login />
+      </PublicRoute>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <PublicRoute user={user}>
+            <SignUp />
+          </PublicRoute>
+        }
+      />
       </Routes>
     </Router>
   );
