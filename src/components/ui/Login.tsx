@@ -1,9 +1,11 @@
-
 // Login.tsx
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
 import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +30,9 @@ const Login = () => {
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
         <button type="submit">Login</button>
       </form>
+      <p>
+        Don't have an account? <Link to="/SignUp">Sign up</Link>
+      </p>
     </div>
   );
 };

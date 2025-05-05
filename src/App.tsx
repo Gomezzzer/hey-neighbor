@@ -17,6 +17,7 @@ import "./Input.css";
 import "./NavBar.css";
 import ProtectedRoute from "./components/ui/ProtectedRoute"; 
 import PublicRoute from "./components/ui/PublicRoute";
+import SignUp from "./components/ui/SignUp"; // Import the SignUp component
 
 const NavBar = ({ user }: { user: any }) => (
   <nav className="navbar">
@@ -121,29 +122,38 @@ function App() {
   }, []);
 
   return (
-      <Router>
-        <NavBar user={user} />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route
-            path="/messages"
-            element={
-              <ProtectedRoute user={user}>
-                <MessageBoard />
-              </ProtectedRoute>
-            }
-          />
-           <Route
-    path="/auth"
-    element={
-      <PublicRoute user={user}>
-        <AuthForm />
-      </PublicRoute>
-    }
-  />
-        </Routes>
-      </Router>
-    );
+    <Router>
+      <NavBar user={user} />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute user={user}>
+              <MessageBoard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/auth"
+          element={
+            <PublicRoute user={user}>
+              <AuthForm />
+            </PublicRoute>
+          }
+        />
+        {/* Add the /signup route */}
+        <Route
+          path="/SignUp"
+          element={
+            <PublicRoute user={user}>
+              <SignUp />
+            </PublicRoute>
+          }
+        />
+      </Routes>
+    </Router>
+  );
     
 }
 

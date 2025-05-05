@@ -4,6 +4,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import Login from "./Login";
+import SignUp from "./SignUp"; 
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -49,5 +51,7 @@ const AuthForm = () => {
     </div>
   );
 };
+
+
 
 export default AuthForm;
