@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import "./LandingPage.css";
@@ -19,19 +19,56 @@ import ProtectedRoute from "./components/ui/ProtectedRoute";
 import PublicRoute from "./components/ui/PublicRoute";
 
 
-const NavBar = ({ user }: { user: any }) => (
-  <nav className="navbar">
-    <ul>
-      <li><Link to="/">Home</Link></li>
-      <li><Link to="/messages">Message Board</Link></li>
-      {!user ? (
-        <li><Link to="/auth">Login / Signup</Link></li>
-      ) : (
-        <li><button onClick={() => auth.signOut()}>Logout</button></li>
-      )}
-    </ul>
-  </nav>
-);
+const NavBar = ({ user }: { user: any }) => {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLLIElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <nav className="navbar">
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/messages">Message Board</Link></li>
+
+        {!user ? (
+          <li><Link to="/auth">Login / Signup</Link></li>
+        ) : (
+          <li className="dropdown">
+            <button
+              className="dropdown-toggle"
+              onClick={() => setShowDropdown(!showDropdown)}
+            >
+              {user.email}
+            </button>
+            {showDropdown && (
+              <ul className="dropdown-menu">
+                <li><Link to="/profile">Profile</Link></li>
+                <li>
+                  <button onClick={() => auth.signOut()}>Logout</button>
+                </li>
+              </ul>
+            )}
+          </li>
+        )}
+      </ul>
+    </nav>
+  );
+};
 
 
 const Button = ({ type = "button", className = "", children, onClick }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
