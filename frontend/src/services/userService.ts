@@ -1,6 +1,44 @@
 // src/services/userService.ts
 import { db } from '../firebase/firebase'; // Adjust based on your Firebase setup
-import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, getDocs, setDoc } from 'firebase/firestore';
+import { updateDoc } from 'firebase/firestore';
+ // Add to the top if not already there
+
+ export const ensureUserDocumentExists = async (user: any) => {
+  const userRef = doc(db, 'users', user.uid);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    await setDoc(userRef, {
+      email: user.email,
+      fullName: '',
+      pronouns: '',
+      location: '',
+      bio: '',
+      interests: [],
+    });
+  }
+};
+
+interface UserUpdateData {
+  fullName?: string;
+  pronouns?: string;
+  location?: string;
+  bio?: string;
+  interests?: string[];
+}
+
+export const updateUserDetails = async (userId: string, data: UserUpdateData): Promise<void> => {
+  try {
+    const userRef = doc(db, 'users', userId);
+    await setDoc(userRef, data, { merge: true }); // <-- fixes the issue
+  } catch (error) {
+    console.error('Error updating user details:', error);
+    throw new Error('Failed to update user details');
+  }
+};
+
+
 
 export const getUserDetails = async (userId: string) => {
   try {
@@ -16,6 +54,8 @@ export const getUserDetails = async (userId: string) => {
     throw error;
   }
 };
+
+
 
 export const getUserFriends = async (userId: string) => {
   try {

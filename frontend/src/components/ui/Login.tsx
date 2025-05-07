@@ -6,6 +6,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
+import { ensureUserDocumentExists } from '../../services/userService';
+
 
 
 const Login = () => {
@@ -16,12 +18,18 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // 👇 Ensure Firestore user document exists
+      await ensureUserDocumentExists(user);
+  
       navigate("/messages");
     } catch (err: any) {
       alert("Login failed: " + err.message);
     }
   };
+  
 
   return (
     <div className="auth-container">
