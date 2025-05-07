@@ -17,6 +17,7 @@ import "./Input.css";
 import "./NavBar.css";
 import ProtectedRoute from "./components/ui/ProtectedRoute"; 
 import PublicRoute from "./components/ui/PublicRoute";
+import Profile from './components/ui/Profile'; 
 
 
 const NavBar = ({ user }: { user: any }) => {
@@ -171,6 +172,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+         <Route
+        path="/profile"
+        element={
+          <ProtectedRoute user={user}>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
         <Route
           path="/auth"
           element={
