@@ -21,8 +21,16 @@ const Profile = () => {
       try {
         const user = auth.currentUser;
         if (user) {
-          const userInfo = await getUserDetails(user.uid);
-          const userFriends = await getUserFriends(user.uid);
+          const backendPing = await fetch('http://localhost:4000/api/health');
+          const backendData = await backendPing.json();
+          console.log('Backend says:', backendData);
+
+          const userInfoRes = await fetch(`http://localhost:4000/api/user/${user.uid}`);
+          const userInfo = await userInfoRes.json();
+
+          const userFriendsRes = await fetch(`http://localhost:4000/api/friends/${user.uid}`);
+          const userFriends = await userFriendsRes.json();
+
           setUserDetails(userInfo);
           setFriends(userFriends);
           setFormData({
