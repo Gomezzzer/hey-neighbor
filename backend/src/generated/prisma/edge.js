@@ -148,7 +148,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -161,13 +161,13 @@ const config = {
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": "DATABASE_URL",
+        "fromEnvVar": null,
         "value": "file:./dev.db"
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String   @id @default(uuid())\n  fullName  String\n  pronouns  String?\n  location  String?\n  bio       String?\n  interests String? // Changed from String[] to String\n  friends   Friend[] @relation(\"UserFriends\")\n}\n\nmodel Friend {\n  id     String @id @default(uuid())\n  name   String\n  userId String\n  user   User   @relation(\"UserFriends\", fields: [userId], references: [id])\n}\n",
-  "inlineSchemaHash": "0ecc7201d8e6b54d9af3af5ee2f0ed5c6a25a7016a5bff011228c77515bade03",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\nmodel User {\n  id        String   @id @default(uuid())\n  fullName  String\n  pronouns  String?\n  location  String?\n  bio       String?\n  interests String? // Changed from String[] to String\n  friends   Friend[] @relation(\"UserFriends\")\n}\n\nmodel Friend {\n  id     String @id @default(uuid())\n  name   String\n  userId String\n  user   User   @relation(\"UserFriends\", fields: [userId], references: [id])\n}\n",
+  "inlineSchemaHash": "050b83432b4d4451bc93da7e29b4b877b62c6f5933884a944ad166396f4e17a4",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -178,9 +178,7 @@ config.engineWasm = undefined
 config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
-  parsed: {
-    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
-  }
+  parsed: {}
 })
 
 if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {

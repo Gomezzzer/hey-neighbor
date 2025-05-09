@@ -2,15 +2,16 @@ import { RequestHandler } from 'express';
 
 // In-memory mock DB (now storing interests as a string)
 const users: Record<string, any> = {
-  '123': {
-    id: '123',
+  'Za69s9xJjadZmzs2dmZ5u7u6MZu2': {
+    id: 'Za69s9xJjadZmzs2dmZ5u7u6MZu2',
     fullName: 'Taylor Gomez',
     pronouns: 'they/them',
     location: 'Chicago',
     bio: 'Chef and app builder',
-    interests: 'cooking, tech, travel', // now a string
+    interests: 'cooking, tech, travel',
   },
 };
+
 
 // GET /api/user/:id
 export const getUserById: RequestHandler = (req, res) => {

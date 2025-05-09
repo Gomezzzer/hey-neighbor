@@ -30,13 +30,28 @@ interface UserUpdateData {
 
 export const updateUserDetails = async (userId: string, data: UserUpdateData): Promise<void> => {
   try {
-    const userRef = doc(db, 'users', userId);
-    await setDoc(userRef, data, { merge: true }); // <-- fixes the issue
+    console.log('Updating user with ID:', userId); 
+    
+    const res = await fetch(`http://localhost:4000/api/user/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text(); // get backend error message
+      console.error('Backend error:', errorText);
+      throw new Error('Failed to update user');
+    }
   } catch (error) {
     console.error('Error updating user details:', error);
     throw new Error('Failed to update user details');
   }
 };
+
+
 
 
 
