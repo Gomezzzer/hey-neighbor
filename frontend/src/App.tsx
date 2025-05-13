@@ -54,7 +54,12 @@ const NavBar = ({ user }: { user: any }) => {
               className="dropdown-toggle"
               onClick={() => setShowDropdown(!showDropdown)}
             >
-              {user.email}
+               <img
+            src={user.photoURL || '/cat.png'}
+            alt="Profile"
+            className="navbar-avatar"
+          />
+          <span>{user.email}</span>
             </button>
             {showDropdown && (
               <ul className="dropdown-menu">

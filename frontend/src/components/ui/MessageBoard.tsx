@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data"; 
 import "./MessageBoard.css";
 
+// Define the Message type
 type Message = {
   id: number;
   author: string;
@@ -14,17 +17,20 @@ const MessageBoard = () => {
   const [author, setAuthor] = useState("");
   const [text, setText] = useState("");
   const [editId, setEditId] = useState<number | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-  // Load saved messages from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem("messages");
     if (saved) setMessages(JSON.parse(saved));
   }, []);
 
-  // Save to localStorage on messages change
   useEffect(() => {
     localStorage.setItem("messages", JSON.stringify(messages));
   }, [messages]);
+
+  const handleEmojiSelect = (emoji: any) => {
+    setText((prev) => prev + emoji.native);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,31 +56,29 @@ const MessageBoard = () => {
 
     setAuthor("");
     setText("");
+    setShowEmojiPicker(false);
   };
 
-  const handleEdit = (id: number) => {
-    const msg = messages.find((m) => m.id === id);
-    if (msg) {
-      setAuthor(msg.author);
-      setText(msg.text);
+  function handleEdit(id: number): void {
+    const messageToEdit = messages.find((msg) => msg.id === id);
+    if (messageToEdit) {
+      setAuthor(messageToEdit.author);
+      setText(messageToEdit.text);
       setEditId(id);
     }
-  };
-
-  const handleDelete = (id: number) => {
-    if (confirm("Delete this message?")) {
-      setMessages((prev) => prev.filter((m) => m.id !== id));
-    }
-  };
-
-  const handleLike = (id: number) => {
+  }
+  function handleDelete(id: number): void {
+    setMessages((prev) => prev.filter((msg) => msg.id !== id));
+  }
+  function handleLike(id: number): void {
     setMessages((prev) =>
       prev.map((msg) =>
         msg.id === id ? { ...msg, likes: msg.likes + 1 } : msg
       )
     );
-  };  
-  
+  }
+  // ... handleEdit, handleDelete, handleLike remain the same
+
   return (
     <div className="message-board">
       <h2>Message Board</h2>
@@ -91,6 +95,12 @@ const MessageBoard = () => {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
+        <button type="button" onClick={() => setShowEmojiPicker((prev) => !prev)}>
+          😊
+        </button>
+        {showEmojiPicker && (
+          <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+        )}
         <button type="submit">
           {editId !== null ? "Update Message" : "Post Message"}
         </button>
@@ -116,4 +126,5 @@ const MessageBoard = () => {
 };
 
 export default MessageBoard;
+
 
