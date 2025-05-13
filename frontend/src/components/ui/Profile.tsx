@@ -79,7 +79,7 @@ const Profile = () => {
     <div className="profile">
       <div className="profile-header">
         <img 
-          src={userDetails?.photoURL || "/default-avatar.png"} 
+          src={userDetails?.photoURL || "/cat.png"} 
           alt="Profile" 
           className="profile-img" 
         />
@@ -119,15 +119,22 @@ const Profile = () => {
             key={friend.id}
             className="border p-3 rounded-md shadow-sm bg-white"
           >
-            <p className="font-bold">{friend.fullName}</p>
-            <p className="text-sm text-gray-600">{friend.pronouns}</p>
-            <p className="text-sm">{friend.location}</p>
-            <p className="text-sm italic">{friend.bio}</p>
-            {(friend.interests ?? []).length > 0 && (
-              <p className="text-sm mt-1">
-                Interests: {friend.interests?.join(', ')}
-              </p>
+             <img
+                src={friend.avatar || '/default-avatar.png'}
+                alt={`${friend.fullName}'s avatar`}
+                className="friend-avatar"
+              />
+              <div>
+                <p className="font-bold">{friend.fullName}</p>
+                <p className="text-sm text-gray-600">{friend.pronouns}</p>
+                <p className="text-sm">{friend.location}</p>
+                <p className="text-sm italic">{friend.bio}</p>
+                {(friend.interests ?? []).length > 0 && (
+                  <p className="text-sm mt-1">
+                    Interests: {friend.interests?.join(', ')}
+                  </p>
             )}
+            </div>
           </li>
         ))}
       </ul>
