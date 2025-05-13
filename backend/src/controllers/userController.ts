@@ -1,4 +1,6 @@
-import { RequestHandler } from 'express';
+import { Request, Response } from 'express';
+import { mockUsers } from '../mockData';
+
 
 // In-memory mock DB (now storing interests as a string)
 const users: Record<string, any> = {
@@ -13,8 +15,8 @@ const users: Record<string, any> = {
 };
 
 
-// GET /api/user/:id
-export const getUserById: RequestHandler = (req, res) => {
+
+export const getUserById = (req: Request, res: Response) => {
   const { id } = req.params;
   const user = users[id];
 
@@ -23,7 +25,6 @@ export const getUserById: RequestHandler = (req, res) => {
     return;
   }
 
-  // Convert interests string to array for the frontend
   const responseUser = {
     ...user,
     interests: user.interests?.split(',').map((i: string) => i.trim()) || [],
@@ -32,8 +33,7 @@ export const getUserById: RequestHandler = (req, res) => {
   res.status(200).json(responseUser);
 };
 
-// PUT /api/user/:id
-export const updateUserById: RequestHandler = (req, res) => {
+export const updateUserById = (req: Request, res: Response) => {
   const { id } = req.params;
   const data = req.body;
 
@@ -47,7 +47,7 @@ export const updateUserById: RequestHandler = (req, res) => {
     ...user,
     ...data,
     interests: Array.isArray(data.interests)
-      ? data.interests.join(',') // store as comma-separated string
+      ? data.interests.join(',')
       : data.interests,
   };
 
@@ -58,5 +58,9 @@ export const updateUserById: RequestHandler = (req, res) => {
     interests: updatedUser.interests?.split(',').map((i: string) => i.trim()) || [],
   });
 };
+
+
+
+
 
 

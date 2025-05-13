@@ -113,15 +113,24 @@ const Profile = () => {
 
       <div className="friends-section">
         <h3>Friends List</h3>
-        <ul className="friends-list">
-          {friends.length > 0 ? (
-            friends.map((friend) => (
-              <li key={friend.id}>{friend.name}</li>
-            ))
-          ) : (
-            <p>No friends yet.</p>
-          )}
-        </ul>
+        <ul className="space-y-3">
+        {friends.map((friend) => (
+          <li
+            key={friend.id}
+            className="border p-3 rounded-md shadow-sm bg-white"
+          >
+            <p className="font-bold">{friend.fullName}</p>
+            <p className="text-sm text-gray-600">{friend.pronouns}</p>
+            <p className="text-sm">{friend.location}</p>
+            <p className="text-sm italic">{friend.bio}</p>
+            {(friend.interests ?? []).length > 0 && (
+              <p className="text-sm mt-1">
+                Interests: {friend.interests?.join(', ')}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
       </div>
     </div>
   );
