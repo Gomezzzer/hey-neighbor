@@ -7,9 +7,10 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
 
 model User {
   id        String   @id @default(uuid())
@@ -17,10 +18,9 @@ model User {
   pronouns  String?
   location  String?
   bio       String?
-  interests String?  // Changed from String[] to String
+  interests String[] // PostgreSQL supports array types
   friends   Friend[] @relation("UserFriends")
 }
-
 
 model Friend {
   id       String  @id @default(uuid())

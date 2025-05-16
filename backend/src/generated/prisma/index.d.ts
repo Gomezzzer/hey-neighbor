@@ -226,8 +226,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.7.0
-   * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
+   * Prisma Client JS version: 6.8.1
+   * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
    */
   export type PrismaVersion = {
     client: string
@@ -1006,7 +1006,6 @@ export namespace Prisma {
     pronouns: string | null
     location: string | null
     bio: string | null
-    interests: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1015,7 +1014,6 @@ export namespace Prisma {
     pronouns: string | null
     location: string | null
     bio: string | null
-    interests: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1035,7 +1033,6 @@ export namespace Prisma {
     pronouns?: true
     location?: true
     bio?: true
-    interests?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1044,7 +1041,6 @@ export namespace Prisma {
     pronouns?: true
     location?: true
     bio?: true
-    interests?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1135,7 +1131,7 @@ export namespace Prisma {
     pronouns: string | null
     location: string | null
     bio: string | null
-    interests: string | null
+    interests: string[]
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1212,7 +1208,7 @@ export namespace Prisma {
       pronouns: string | null
       location: string | null
       bio: string | null
-      interests: string | null
+      interests: string[]
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1642,7 +1638,7 @@ export namespace Prisma {
     readonly pronouns: FieldRef<"User", 'String'>
     readonly location: FieldRef<"User", 'String'>
     readonly bio: FieldRef<"User", 'String'>
-    readonly interests: FieldRef<"User", 'String'>
+    readonly interests: FieldRef<"User", 'String[]'>
   }
     
 
@@ -1872,6 +1868,7 @@ export namespace Prisma {
      * The data used to create many Users.
      */
     data: UserCreateManyInput | UserCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -1890,6 +1887,7 @@ export namespace Prisma {
      * The data used to create many Users.
      */
     data: UserCreateManyInput | UserCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -2918,6 +2916,7 @@ export namespace Prisma {
      * The data used to create many Friends.
      */
     data: FriendCreateManyInput | FriendCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -2936,6 +2935,7 @@ export namespace Prisma {
      * The data used to create many Friends.
      */
     data: FriendCreateManyInput | FriendCreateManyInput[]
+    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3106,6 +3106,9 @@ export namespace Prisma {
    */
 
   export const TransactionIsolationLevel: {
+    ReadUncommitted: 'ReadUncommitted',
+    ReadCommitted: 'ReadCommitted',
+    RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
   };
 
@@ -3141,6 +3144,14 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
+  };
+
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
   export const NullsOrder: {
     first: 'first',
     last: 'last'
@@ -3162,9 +3173,23 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'String[]'
+   */
+  export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
   /**
    * Deep Input Types
@@ -3180,7 +3205,7 @@ export namespace Prisma {
     pronouns?: StringNullableFilter<"User"> | string | null
     location?: StringNullableFilter<"User"> | string | null
     bio?: StringNullableFilter<"User"> | string | null
-    interests?: StringNullableFilter<"User"> | string | null
+    interests?: StringNullableListFilter<"User">
     friends?: FriendListRelationFilter
   }
 
@@ -3190,7 +3215,7 @@ export namespace Prisma {
     pronouns?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
-    interests?: SortOrderInput | SortOrder
+    interests?: SortOrder
     friends?: FriendOrderByRelationAggregateInput
   }
 
@@ -3203,7 +3228,7 @@ export namespace Prisma {
     pronouns?: StringNullableFilter<"User"> | string | null
     location?: StringNullableFilter<"User"> | string | null
     bio?: StringNullableFilter<"User"> | string | null
-    interests?: StringNullableFilter<"User"> | string | null
+    interests?: StringNullableListFilter<"User">
     friends?: FriendListRelationFilter
   }, "id">
 
@@ -3213,7 +3238,7 @@ export namespace Prisma {
     pronouns?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
-    interests?: SortOrderInput | SortOrder
+    interests?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -3228,7 +3253,7 @@ export namespace Prisma {
     pronouns?: StringNullableWithAggregatesFilter<"User"> | string | null
     location?: StringNullableWithAggregatesFilter<"User"> | string | null
     bio?: StringNullableWithAggregatesFilter<"User"> | string | null
-    interests?: StringNullableWithAggregatesFilter<"User"> | string | null
+    interests?: StringNullableListFilter<"User">
   }
 
   export type FriendWhereInput = {
@@ -3282,7 +3307,7 @@ export namespace Prisma {
     pronouns?: string | null
     location?: string | null
     bio?: string | null
-    interests?: string | null
+    interests?: UserCreateinterestsInput | string[]
     friends?: FriendCreateNestedManyWithoutUserInput
   }
 
@@ -3292,7 +3317,7 @@ export namespace Prisma {
     pronouns?: string | null
     location?: string | null
     bio?: string | null
-    interests?: string | null
+    interests?: UserCreateinterestsInput | string[]
     friends?: FriendUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -3302,7 +3327,7 @@ export namespace Prisma {
     pronouns?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
-    interests?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
     friends?: FriendUpdateManyWithoutUserNestedInput
   }
 
@@ -3312,7 +3337,7 @@ export namespace Prisma {
     pronouns?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
-    interests?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
     friends?: FriendUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -3322,7 +3347,7 @@ export namespace Prisma {
     pronouns?: string | null
     location?: string | null
     bio?: string | null
-    interests?: string | null
+    interests?: UserCreateinterestsInput | string[]
   }
 
   export type UserUpdateManyMutationInput = {
@@ -3331,7 +3356,7 @@ export namespace Prisma {
     pronouns?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
-    interests?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -3340,7 +3365,7 @@ export namespace Prisma {
     pronouns?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
-    interests?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
   }
 
   export type FriendCreateInput = {
@@ -3386,8 +3411,8 @@ export namespace Prisma {
 
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3395,13 +3420,14 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3409,7 +3435,16 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
   }
 
   export type FriendListRelationFilter = {
@@ -3442,7 +3477,6 @@ export namespace Prisma {
     pronouns?: SortOrder
     location?: SortOrder
     bio?: SortOrder
-    interests?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -3451,13 +3485,12 @@ export namespace Prisma {
     pronouns?: SortOrder
     location?: SortOrder
     bio?: SortOrder
-    interests?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3465,6 +3498,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
@@ -3473,8 +3507,8 @@ export namespace Prisma {
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3482,6 +3516,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
@@ -3511,6 +3546,10 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
+  export type UserCreateinterestsInput = {
+    set: string[]
+  }
+
   export type FriendCreateNestedManyWithoutUserInput = {
     create?: XOR<FriendCreateWithoutUserInput, FriendUncheckedCreateWithoutUserInput> | FriendCreateWithoutUserInput[] | FriendUncheckedCreateWithoutUserInput[]
     connectOrCreate?: FriendCreateOrConnectWithoutUserInput | FriendCreateOrConnectWithoutUserInput[]
@@ -3531,6 +3570,11 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type UserUpdateinterestsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type FriendUpdateManyWithoutUserNestedInput = {
@@ -3577,8 +3621,8 @@ export namespace Prisma {
 
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3591,8 +3635,8 @@ export namespace Prisma {
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3605,8 +3649,8 @@ export namespace Prisma {
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3622,8 +3666,8 @@ export namespace Prisma {
 
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3633,8 +3677,8 @@ export namespace Prisma {
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3650,8 +3694,8 @@ export namespace Prisma {
 
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3676,6 +3720,7 @@ export namespace Prisma {
 
   export type FriendCreateManyUserInputEnvelope = {
     data: FriendCreateManyUserInput | FriendCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type FriendUpsertWithWhereUniqueWithoutUserInput = {
@@ -3709,7 +3754,7 @@ export namespace Prisma {
     pronouns?: string | null
     location?: string | null
     bio?: string | null
-    interests?: string | null
+    interests?: UserCreateinterestsInput | string[]
   }
 
   export type UserUncheckedCreateWithoutFriendsInput = {
@@ -3718,7 +3763,7 @@ export namespace Prisma {
     pronouns?: string | null
     location?: string | null
     bio?: string | null
-    interests?: string | null
+    interests?: UserCreateinterestsInput | string[]
   }
 
   export type UserCreateOrConnectWithoutFriendsInput = {
@@ -3743,7 +3788,7 @@ export namespace Prisma {
     pronouns?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
-    interests?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
   }
 
   export type UserUncheckedUpdateWithoutFriendsInput = {
@@ -3752,7 +3797,7 @@ export namespace Prisma {
     pronouns?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
-    interests?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
   }
 
   export type FriendCreateManyUserInput = {
